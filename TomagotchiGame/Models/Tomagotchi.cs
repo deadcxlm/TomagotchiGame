@@ -1,4 +1,7 @@
-﻿namespace TomagotchiGame.Models
+﻿using System.Text.Json;
+using TomagotchiGame.SharedDto;
+
+namespace TomagotchiGame.Models
 {
     public class Tomagotchi : ITomagotchi
     {
@@ -7,81 +10,75 @@
 
         private readonly Random random = new Random();
 
-        public string Name { get; set; }
-        public int Health { get; set; }
-        public int Hunger { get; set; }
-        public int Fatigue { get; set; }
-        public TomagotchiStateEnum State { get; set; }
-
         private bool flagHeal = true;
+        private const string FILE_NAME = "save.json";
 
-        public Tomagotchi(string name)
+        private TomagotchiModel _pet = null!;
+
+        public void CreateNewPet(string name)
         {
-            Name = name;
-            Health = 10;
-            Hunger = 0;
-            Fatigue = 0;
+            _pet = new TomagotchiModel(name);
         }
 
         public void Feed()
         {
-            Hunger--;
+            _pet.Hunger--;
 
-            if (Hunger < MIN_ATTRIBUTE_VALUE)
+            if (_pet.Hunger < MIN_ATTRIBUTE_VALUE)
             {
-                Health--;
-                Hunger = MIN_ATTRIBUTE_VALUE;
+                _pet.Health--;
+                _pet.Hunger = MIN_ATTRIBUTE_VALUE;
             }
-            else if (Hunger == MIN_ATTRIBUTE_VALUE)
+            else if (_pet.Hunger == MIN_ATTRIBUTE_VALUE)
             {
-                Health += 1;
-                if (Health > MAX_ATTRIBUTE_VALUE)
+                _pet.Health += 1;
+                if (_pet.Health > MAX_ATTRIBUTE_VALUE)
                 {
-                    Health = MAX_ATTRIBUTE_VALUE;
+                    _pet.Health = MAX_ATTRIBUTE_VALUE;
                 }
             }
         }
 
         public void Play()
         {
-            Fatigue++;
-            if (Fatigue > MAX_ATTRIBUTE_VALUE)
+            _pet.Fatigue++;
+            if (_pet.Fatigue > MAX_ATTRIBUTE_VALUE)
             {
-                Fatigue = MAX_ATTRIBUTE_VALUE;
-                Health--;
-                Hunger++;
-                if (Hunger > MAX_ATTRIBUTE_VALUE)
+                _pet.Fatigue = MAX_ATTRIBUTE_VALUE;
+                _pet.Health--;
+                _pet.Hunger++;
+                if (_pet.Hunger > MAX_ATTRIBUTE_VALUE)
                 {
-                    Hunger = MAX_ATTRIBUTE_VALUE;
-                    Health--;
+                    _pet.Hunger = MAX_ATTRIBUTE_VALUE;
+                    _pet.Health--;
                 }
             }
-            else if (Fatigue > 5 && Hunger < MAX_ATTRIBUTE_VALUE)
+            else if (_pet.Fatigue > 5 && _pet.Hunger < MAX_ATTRIBUTE_VALUE)
             {
-                Hunger++;
+                _pet.Hunger++;
             }
-            else if (Hunger == MAX_ATTRIBUTE_VALUE)
+            else if (_pet.Hunger == MAX_ATTRIBUTE_VALUE)
             {
-                Health--;
+                _pet.Health--;
             }
         }
 
         public async Task Sleep()
         {
-            if (Fatigue >= 7)
+            if (_pet.Fatigue >= 7)
             {
-                Fatigue = MIN_ATTRIBUTE_VALUE;
+                _pet.Fatigue = MIN_ATTRIBUTE_VALUE;
 
-                if (Health < MAX_ATTRIBUTE_VALUE)
+                if (_pet.Health < MAX_ATTRIBUTE_VALUE)
                 {
-                    Health++;
+                    _pet.Health++;
                 }
 
-                if (Hunger < MAX_ATTRIBUTE_VALUE)
+                if (_pet.Hunger < MAX_ATTRIBUTE_VALUE)
                 {
-                    Hunger++;
+                    _pet.Hunger++;
                 }
-                else Health--;
+                else _pet.Health--;
 
                 flagHeal = true;
 
@@ -91,19 +88,19 @@
 
         public bool IsCritical()
         {
-            return Health <= 0;
+            return _pet.Health <= 0;
         }
 
         public void UpdateState()
         {
 
-            if (Hunger > 7 || Fatigue > 7 || Health < 5)
+            if (_pet.Hunger > 7 || _pet.Fatigue > 7 || _pet.Health < 5)
             {
-                State = TomagotchiStateEnum.Sad;
+                _pet.State = TomagotchiStateEnum.Sad;
             }
             else
             {
-                State = TomagotchiStateEnum.Happy;
+                _pet.State = TomagotchiStateEnum.Happy;
             }
         }
 
@@ -111,14 +108,63 @@
         {
             if (flagHeal)
             {
-                Health++;
-                if (Health > MAX_ATTRIBUTE_VALUE)
+                _pet.Health++;
+                if (_pet.Health > MAX_ATTRIBUTE_VALUE)
                 {
-                    Health = MAX_ATTRIBUTE_VALUE;
+                    _pet.Health = MAX_ATTRIBUTE_VALUE;
                 }
                 flagHeal = false;
             }
         }
 
+        public TomagotchiDto GetStatus()
+        {
+            return new TomagotchiDto(_pet.Name, _pet.Health, _pet.Hunger, _pet.Fatigue);
+        }
+
+        public void Revive()
+        {
+            _pet.Health = MAX_ATTRIBUTE_VALUE;
+            _pet.Hunger = MIN_ATTRIBUTE_VALUE;
+            _pet.Fatigue = MIN_ATTRIBUTE_VALUE;
+        }
+        public int GetState()
+        {
+            return (int)_pet.State;
+        }
+        public TomagotchiStateEnum SetState(TomagotchiStateEnum newState)
+        {
+            _pet.State= newState;
+            return _pet.State;
+        }
+
+        public void Save()
+        {
+            if (!File.Exists(FILE_NAME))
+            {
+                File.Create(FILE_NAME).Close();
+            }
+
+            string json = JsonSerializer.Serialize(_pet);
+            File.WriteAllText(FILE_NAME, json);
+        }
+
+        public bool Load()
+        {
+            if (!File.Exists(FILE_NAME))
+            {
+                File.Create(FILE_NAME).Close();
+            }
+
+            string json = File.ReadAllText(FILE_NAME);
+            var deserializedJson = JsonSerializer.Deserialize<TomagotchiModel>(json);
+
+            if (deserializedJson != null)
+            {
+                _pet = deserializedJson;
+                return true;
+            }
+            return false;
+        }
     }
 }

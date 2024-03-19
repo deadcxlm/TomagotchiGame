@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using TomagotchiGame.Models;
+﻿using TomagotchiGame.Models;
 using TomagotchiGame.Views;
 
 namespace TomagotchiGame.Controllers
@@ -7,10 +6,9 @@ namespace TomagotchiGame.Controllers
     public class TomagotchiController : ITomagotchiController
     {
         private ITomagotchi _tomagotchi;
-        private readonly IView _view;
-        private string saveFileName = "save.json";
+        private readonly IConsoleView _view;
 
-        public TomagotchiController(IView view, ITomagotchi tomagotchi)
+        public TomagotchiController(IConsoleView view, ITomagotchi tomagotchi)
         {
             _view = view;
             _tomagotchi = tomagotchi;
@@ -26,9 +24,9 @@ namespace TomagotchiGame.Controllers
                     _view.DisplayClear();
 
                     _tomagotchi.UpdateState();
-                    _view.DrawTomagotchi(_tomagotchi.State);
+                    _view.DrawTomagotchi(_tomagotchi.GetState());
 
-                    _view.DisplayTomagotchiStatus(_tomagotchi.Name, _tomagotchi.Health, _tomagotchi.Hunger, _tomagotchi.Fatigue);
+                    _view.DisplayTomagotchiStatus(_tomagotchi.GetStatus());
 
                     _view.DisplayActionMenu();
                     string choice = _view.GetUserInput();
@@ -43,8 +41,8 @@ namespace TomagotchiGame.Controllers
                             break;
                         case "3":
                             _view.DisplayClear();
-                            _tomagotchi.State = TomagotchiStateEnum.Sleep;
-                            _view.DrawTomagotchi(_tomagotchi.State);
+                            _tomagotchi.SetState(TomagotchiStateEnum.Sleep);
+                            _view.DrawTomagotchi(_tomagotchi.GetState());
 
                             await _tomagotchi.Sleep();
                             break;
@@ -53,12 +51,7 @@ namespace TomagotchiGame.Controllers
                             _tomagotchi.Heal();
                             break;
                         case "5":
-                            if (!File.Exists(saveFileName))
-                            {
-                                File.Create(saveFileName).Close();
-                            }
-
-                            await SaveGame(saveFileName);
+                            await SaveGame();
                             break;
                         case "6":
                             _view.DisplayClear();
@@ -66,12 +59,7 @@ namespace TomagotchiGame.Controllers
 
                             if (_view.GetUserInput().ToLower() == "y")
                             {
-                                if (!File.Exists(saveFileName))
-                                {
-                                    File.Create(saveFileName).Close();
-                                }
-
-                                await SaveGame(saveFileName);
+                                await SaveGame();
                                 await MainMenu();
                             }
                             else await MainMenu();
@@ -85,18 +73,16 @@ namespace TomagotchiGame.Controllers
 
                 if (_tomagotchi.IsCritical())
                 {
-                    _tomagotchi.State = TomagotchiStateEnum.Dead;
+                    _tomagotchi.SetState(TomagotchiStateEnum.Dead);
 
                     _view.DisplayClear();
-                    _view.DrawTomagotchi(_tomagotchi.State);
+                    _view.DrawTomagotchi(_tomagotchi.GetState());
 
                     _view.DisplayMessage("\nDo you want to heal your pet? (Y/N): ");
 
                     if (_view.GetUserInput().ToLower() == "y")
                     {
-                        _tomagotchi.Health = 5;
-                        _tomagotchi.Hunger = 5;
-                        _tomagotchi.Fatigue = 5;
+                        _tomagotchi.Revive();
                         continue;
                     }
 
@@ -106,13 +92,11 @@ namespace TomagotchiGame.Controllers
             }
         }
 
-        public async Task SaveGame(string fileName)
+        public async Task SaveGame()
         {
             try
             {
-                string json = JsonSerializer.Serialize(_tomagotchi);
-
-                File.WriteAllText(fileName, json);
+                _tomagotchi.Save();
 
                 _view.DisplayClear();
                 _view.DisplayMessage("Game saved successfully.");
@@ -126,24 +110,18 @@ namespace TomagotchiGame.Controllers
             }
         }
 
-        public async Task LoadGame(string fileName)
+        public async Task LoadGame()
         {
             try
             {
-                string json = File.ReadAllText(fileName);
-
-                var deserializedTomagotchi = JsonSerializer.Deserialize<Tomagotchi>(json);
-
-                if (deserializedTomagotchi != null)
+                if (_tomagotchi.Load())
                 {
-                    _tomagotchi = deserializedTomagotchi;
                     _view.DisplayMessage("Game loaded successfully");
                     await StartGame();
                 }
                 else
                 { 
                     _view.DisplayMessage("Failed to load save file. Creating a new game...");
-
                     await MainMenu();
                 }
             }
@@ -165,7 +143,7 @@ namespace TomagotchiGame.Controllers
                     await StartNewGame();
                     break;
                 case "2":
-                    await LoadGame(saveFileName);
+                    await LoadGame();
                     break;
                 case "3":
                     _view.DisplayClear();
@@ -191,7 +169,7 @@ namespace TomagotchiGame.Controllers
 
             if (!string.IsNullOrWhiteSpace(petName))
             {
-                _tomagotchi = new Tomagotchi(petName);
+                _tomagotchi.CreateNewPet(petName);
             }
             else
             {

@@ -1,15 +1,15 @@
-﻿using TomagotchiGame.Models;
+﻿using TomagotchiGame.SharedDto;
 
 namespace TomagotchiGame.Views
 {
-    public interface IView
+    public interface IConsoleView
     {
-        void DisplayTomagotchiStatus(string name, int health, int hunger, int fatigue);
+        void DisplayTomagotchiStatus(TomagotchiDto tomagotchiDto);
         void DisplayMessage(string message);
         void DisplayClear();
         void DisplayActionMenu();
         string GetUserInput();
-        void DrawTomagotchi(TomagotchiStateEnum state);
+        void DrawTomagotchi(int state);
         void DisplayMainMenu();
     }
 }

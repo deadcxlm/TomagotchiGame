@@ -1,8 +1,8 @@
-﻿using TomagotchiGame.Models;
+﻿using TomagotchiGame.SharedDto;
 
 namespace TomagotchiGame.Views
 {
-    public class ConsoleView : IView
+    public class ConsoleView : IConsoleView
     {
         public void DisplayClear()
         {
@@ -26,13 +26,13 @@ namespace TomagotchiGame.Views
             Console.Write(message);
         }
 
-        public void DisplayTomagotchiStatus(string name, int health, int hunger, int fatigue)
+        public void DisplayTomagotchiStatus(TomagotchiDto tomagotchiDto)
         {
             Console.WriteLine("───────────────────────────");
-            Console.WriteLine($"Name:   {name}");
-            Console.WriteLine($"Health: {health}");
-            Console.WriteLine($"Hunger: {hunger}");
-            Console.WriteLine($"Fatigue: {fatigue}");
+            Console.WriteLine($"Name:   {tomagotchiDto.Name}");
+            Console.WriteLine($"Health: {tomagotchiDto.Health}");
+            Console.WriteLine($"Hunger: {tomagotchiDto.Hunger}");
+            Console.WriteLine($"Fatigue: {tomagotchiDto.Fatigue}");
             Console.WriteLine("───────────────────────────");
         }
 
@@ -42,20 +42,20 @@ namespace TomagotchiGame.Views
             return Console.ReadLine()!;
         }
 
-        public void DrawTomagotchi(TomagotchiStateEnum state)
+        public void DrawTomagotchi(int state)
         {
             switch (state)
             {
-                case TomagotchiStateEnum.Happy:
+                case 0:
                     Console.WriteLine("\t /\\_/\\\r\n\t( o.o )\r\n\t > ^ <");
                     break;
-                case TomagotchiStateEnum.Sad:
+                case 1:
                     Console.WriteLine("\t  /~~~\\\r\n\t / o o \\\r\n\t(   \"   )\r\n\t \\  -  /\r\n\t  \\___/");
                     break;
-                case TomagotchiStateEnum.Dead:
+                case 2:
                     Console.WriteLine("\t  ________\r\n\t /        \\\r\n\t|  R.I.P.  |\r\n\t \\________/");
                     break;
-                case TomagotchiStateEnum.Sleep:
+                case 3:
                     Console.WriteLine("\t  /\\_/\\  \r\n\t ( -.- ) \r\n\t  Zzzzz ");
                     break;
             }

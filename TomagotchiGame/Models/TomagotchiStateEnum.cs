@@ -6,6 +6,5 @@
         Sad,
         Dead,
         Sleep,
-        Sleepy
     }
 }
