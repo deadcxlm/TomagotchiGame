@@ -20,14 +20,14 @@ namespace TomagotchiGame.Views
             Console.WriteLine("1. Feed");
             Console.WriteLine("2. Play");
             Console.WriteLine("3. Sleep");
-            Console.WriteLine("4. Exit");
-            Console.WriteLine("5. Save");
+            Console.WriteLine("4. Save");
+            Console.WriteLine("5. Main menu");
             Console.Write("Choose an action: ");
         }
 
         public void DisplayMessage(string message)
         {
-            Console.WriteLine(message);
+            Console.Write(message);
         }
 
         public void DisplayTomagotchiStatus(string name, int health, int hunger, int fatigue)
@@ -63,6 +63,14 @@ namespace TomagotchiGame.Views
                     Console.WriteLine("\t  /\\_/\\  \r\n\t ( -.- ) \r\n\t  Zzzzz ");
                     break;
             }
+        }
+        public void DisplayMainMenu()
+        {
+            Console.WriteLine("\nMain Menu:");
+            Console.WriteLine("1. New Game");
+            Console.WriteLine("2. Load Game");
+            Console.WriteLine("3. Exit");
+            Console.Write("Choose an option: ");
         }
     }
 }

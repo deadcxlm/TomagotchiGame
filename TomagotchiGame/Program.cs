@@ -8,22 +8,19 @@ namespace TomagotchiGame
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("Welcome to Tomagotchi game!");
+            Console.WriteLine("Welcome to Tomagotchi game!"
+                + "\n\n\nPlease press any key to continue ...");
 
-            // Запрос имени у пользователя
-            Console.Write("Enter the name for your pet: ");
-            string petName = Console.ReadLine()!;
-
-            ITomagotchi tomagotchi = new Tomagotchi(petName);
-
-            // Создание экземпляра представления
             IView view = new ConsoleView();
+            ITomagotchi tomagotchi = null!;
+            TomagotchiController controller = new TomagotchiController(view, tomagotchi);
 
-            // Создание экземпляра контроллера и передача ему модели и представления
-            TomagotchiController controller = new TomagotchiController(tomagotchi, view);
+            Console.ReadKey();
 
-            // Запуск игры
-            await controller.StartGame();
+            while (true)
+            {
+                await controller.MainMenu(); // Отображаем главное меню и начинаем взаимодействие с пользователем
+            }
         }
     }
 }

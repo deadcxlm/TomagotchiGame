@@ -15,5 +15,6 @@ namespace TomagotchiGame.Views
         void DisplayActionMenu();
         string GetUserInput();
         void DrawTomagotchi(TomagotchiStateEnum state);
+        void DisplayMainMenu();
     }
 }
