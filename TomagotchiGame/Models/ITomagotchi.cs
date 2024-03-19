@@ -1,18 +1,21 @@
-﻿namespace TomagotchiGame.Models
+﻿using TomagotchiGame.SharedDto;
+
+namespace TomagotchiGame.Models
 {
     public interface ITomagotchi
     {
-        string Name { get; set; }
-        int Health { get; set; }
-        int Hunger { get; set; }
-        int Fatigue { get; set; }
-        TomagotchiStateEnum State { get; set; }
-
         void Feed();
         void Play();
         bool IsCritical();
         void UpdateState();
         Task Sleep();
         void Heal();
+        void CreateNewPet(string name);
+        TomagotchiDto GetStatus();
+        void Revive();
+        TomagotchiStateEnum GetState();
+        TomagotchiStateEnum SetState(TomagotchiStateEnum newState);
+        void Save();
+        bool Load();
     }
 }

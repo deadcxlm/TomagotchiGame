@@ -3,8 +3,8 @@
     public interface ITomagotchiController
     {
         Task StartGame();
-        Task SaveGame(string fileName);
-        Task LoadGame(string fileName);
+        Task SaveGame();
+        Task LoadGame();
         Task MainMenu();
         Task StartNewGame();
     }

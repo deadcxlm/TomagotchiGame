@@ -1,4 +1,5 @@
 ﻿using TomagotchiGame.Models;
+using TomagotchiGame.SharedDto;
 
 namespace TomagotchiGame.Views
 {
@@ -26,13 +27,13 @@ namespace TomagotchiGame.Views
             Console.Write(message);
         }
 
-        public void DisplayTomagotchiStatus(string name, int health, int hunger, int fatigue)
+        public void DisplayTomagotchiStatus(TomagotchiDto tomagotchiDto)
         {
             Console.WriteLine("───────────────────────────");
-            Console.WriteLine($"Name:   {name}");
-            Console.WriteLine($"Health: {health}");
-            Console.WriteLine($"Hunger: {hunger}");
-            Console.WriteLine($"Fatigue: {fatigue}");
+            Console.WriteLine($"Name:   {tomagotchiDto.Name}");
+            Console.WriteLine($"Health: {tomagotchiDto.Health}");
+            Console.WriteLine($"Hunger: {tomagotchiDto.Hunger}");
+            Console.WriteLine($"Fatigue: {tomagotchiDto.Fatigue}");
             Console.WriteLine("───────────────────────────");
         }
 

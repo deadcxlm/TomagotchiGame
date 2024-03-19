@@ -12,8 +12,8 @@ namespace TomagotchiGame
                 + "\n\n\nPlease press any key to continue ...");
 
             IView view = new ConsoleView();
-            ITomagotchi tomagotchi = null!;
-            TomagotchiController controller = new TomagotchiController(view, tomagotchi);
+            ITomagotchi tomagotchi = new Tomagotchi();
+            ITomagotchiController controller = new TomagotchiController(view, tomagotchi);
 
             Console.ReadKey();
 
