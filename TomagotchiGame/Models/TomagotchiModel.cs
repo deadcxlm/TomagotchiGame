@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-namespace TomagotchiGame.Models
+﻿namespace TomagotchiGame.Models
 {
     public class TomagotchiModel
     {

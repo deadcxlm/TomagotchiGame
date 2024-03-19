@@ -1,5 +1,4 @@
-﻿using TomagotchiGame.Models;
-using TomagotchiGame.SharedDto;
+﻿using TomagotchiGame.SharedDto;
 
 namespace TomagotchiGame.Views
 {
@@ -43,20 +42,20 @@ namespace TomagotchiGame.Views
             return Console.ReadLine()!;
         }
 
-        public void DrawTomagotchi(TomagotchiStateEnum state)
+        public void DrawTomagotchi(int state)
         {
             switch (state)
             {
-                case TomagotchiStateEnum.Happy:
+                case 0:
                     Console.WriteLine("\t /\\_/\\\r\n\t( o.o )\r\n\t > ^ <");
                     break;
-                case TomagotchiStateEnum.Sad:
+                case 1:
                     Console.WriteLine("\t  /~~~\\\r\n\t / o o \\\r\n\t(   \"   )\r\n\t \\  -  /\r\n\t  \\___/");
                     break;
-                case TomagotchiStateEnum.Dead:
+                case 2:
                     Console.WriteLine("\t  ________\r\n\t /        \\\r\n\t|  R.I.P.  |\r\n\t \\________/");
                     break;
-                case TomagotchiStateEnum.Sleep:
+                case 3:
                     Console.WriteLine("\t  /\\_/\\  \r\n\t ( -.- ) \r\n\t  Zzzzz ");
                     break;
             }

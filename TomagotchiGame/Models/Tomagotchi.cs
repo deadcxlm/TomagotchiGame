@@ -1,5 +1,4 @@
-﻿using System.IO.Enumeration;
-using System.Text.Json;
+﻿using System.Text.Json;
 using TomagotchiGame.SharedDto;
 
 namespace TomagotchiGame.Models
@@ -129,9 +128,9 @@ namespace TomagotchiGame.Models
             _pet.Hunger = MIN_ATTRIBUTE_VALUE;
             _pet.Fatigue = MIN_ATTRIBUTE_VALUE;
         }
-        public TomagotchiStateEnum GetState()
+        public int GetState()
         {
-            return _pet.State;
+            return (int)_pet.State;
         }
         public TomagotchiStateEnum SetState(TomagotchiStateEnum newState)
         {

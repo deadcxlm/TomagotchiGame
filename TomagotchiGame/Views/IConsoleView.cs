@@ -1,5 +1,4 @@
-﻿using TomagotchiGame.Models;
-using TomagotchiGame.SharedDto;
+﻿using TomagotchiGame.SharedDto;
 
 namespace TomagotchiGame.Views
 {
@@ -10,7 +9,7 @@ namespace TomagotchiGame.Views
         void DisplayClear();
         void DisplayActionMenu();
         string GetUserInput();
-        void DrawTomagotchi(TomagotchiStateEnum state);
+        void DrawTomagotchi(int state);
         void DisplayMainMenu();
     }
 }

@@ -13,7 +13,7 @@ namespace TomagotchiGame.Models
         void CreateNewPet(string name);
         TomagotchiDto GetStatus();
         void Revive();
-        TomagotchiStateEnum GetState();
+        int GetState();
         TomagotchiStateEnum SetState(TomagotchiStateEnum newState);
         void Save();
         bool Load();

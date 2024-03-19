@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using TomagotchiGame.Models;
+﻿using TomagotchiGame.Models;
 using TomagotchiGame.Views;
 
 namespace TomagotchiGame.Controllers
