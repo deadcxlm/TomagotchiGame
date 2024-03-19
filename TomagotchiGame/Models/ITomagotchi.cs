@@ -19,5 +19,6 @@ namespace TomagotchiGame.Models
         bool IsCritical();
         void UpdateState();
         Task Sleep();
+        void Heal();
     }
 }

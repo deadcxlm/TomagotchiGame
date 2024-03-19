@@ -11,6 +11,7 @@ namespace TomagotchiGame.Models
         Happy,
         Sad,
         Dead,
-        Sleep
+        Sleep,
+        Sleepy
     }
 }

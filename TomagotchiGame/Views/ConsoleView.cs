@@ -20,8 +20,9 @@ namespace TomagotchiGame.Views
             Console.WriteLine("1. Feed");
             Console.WriteLine("2. Play");
             Console.WriteLine("3. Sleep");
-            Console.WriteLine("4. Save");
-            Console.WriteLine("5. Main menu");
+            Console.WriteLine("4. Heal");
+            Console.WriteLine("5. Save");
+            Console.WriteLine("6. Main menu");
             Console.Write("Choose an action: ");
         }
 

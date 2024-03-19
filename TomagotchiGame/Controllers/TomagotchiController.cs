@@ -50,6 +50,10 @@ namespace TomagotchiGame.Controllers
                             await _tomagotchi.Sleep();
                             break;
                         case "4":
+                            _view.DisplayClear();
+                            _tomagotchi.Heal();
+                            break;
+                        case "5":
                             if (!File.Exists(saveFileName))
                             {
                                 File.Create(saveFileName).Close();
@@ -57,7 +61,7 @@ namespace TomagotchiGame.Controllers
 
                             await SaveGame(saveFileName);
                             break;
-                        case "5":
+                        case "6":
                             _view.DisplayClear();
                             _view.DisplayMessage("Do you want to save your progress? (Y/N)");
 
@@ -87,11 +91,14 @@ namespace TomagotchiGame.Controllers
                     _view.DisplayClear();
                     _view.DrawTomagotchi(_tomagotchi.State);
 
-                    _view.DisplayMessage("\nDo you want to play again? (Y/N)");
+                    _view.DisplayMessage("\nDo you want to heal your pet? (Y/N): ");
 
                     if (_view.GetUserInput().ToLower() == "y")
                     {
-                        await MainMenu();
+                        _tomagotchi.Health = 5;
+                        _tomagotchi.Hunger = 5;
+                        _tomagotchi.Fatigue = 5;
+                        continue;
                     }
 
                     break;
@@ -162,6 +169,9 @@ namespace TomagotchiGame.Controllers
                     await LoadGame(saveFileName);
                     break;
                 case "3":
+                    _view.DisplayClear();
+                    _view.DisplayMessage("Goodbye! Thank you for playing!");
+
                     Environment.Exit(0);
                     break;
                 default:

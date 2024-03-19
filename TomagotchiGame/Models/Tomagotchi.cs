@@ -19,6 +19,8 @@ namespace TomagotchiGame.Models
         public int Fatigue { get; set; }
         public TomagotchiStateEnum State { get; set; }
 
+        private bool flagHeal = true;
+
         public Tomagotchi(string name)
         {
             Name = name;
@@ -36,9 +38,9 @@ namespace TomagotchiGame.Models
                 Health--;
                 Hunger = MIN_ATTRIBUTE_VALUE;
             }
-            else if (Hunger == MAX_ATTRIBUTE_VALUE)
+            else if (Hunger == MIN_ATTRIBUTE_VALUE)
             {
-                Health += 3;
+                Health += 1;
                 if (Health > MAX_ATTRIBUTE_VALUE)
                 {
                     Health = MAX_ATTRIBUTE_VALUE;
@@ -72,20 +74,25 @@ namespace TomagotchiGame.Models
 
         public async Task Sleep()
         {
-            Fatigue = MIN_ATTRIBUTE_VALUE;
-
-            if (Health < MAX_ATTRIBUTE_VALUE)
+            if (Fatigue >= 7)
             {
-                Health++;
-            }
+                Fatigue = MIN_ATTRIBUTE_VALUE;
 
-            if (Hunger < MAX_ATTRIBUTE_VALUE)
-            {
-                Hunger++;
-            }
-            else Health--;
+                if (Health < MAX_ATTRIBUTE_VALUE)
+                {
+                    Health++;
+                }
 
-            await Task.Delay(3000);
+                if (Hunger < MAX_ATTRIBUTE_VALUE)
+                {
+                    Hunger++;
+                }
+                else Health--;
+
+                flagHeal = true;
+
+                await Task.Delay(3000);
+            }
         }
 
         public bool IsCritical()
@@ -103,6 +110,19 @@ namespace TomagotchiGame.Models
             else
             {
                 State = TomagotchiStateEnum.Happy;
+            }
+        }
+
+        public void Heal()
+        {
+            if (flagHeal)
+            {
+                Health++;
+                if (Health > MAX_ATTRIBUTE_VALUE)
+                {
+                    Health = MAX_ATTRIBUTE_VALUE;
+                }
+                flagHeal = false;
             }
         }
 
