@@ -48,21 +48,14 @@ namespace TomagotchiGame.Controllers
                             break;
                         case "4":
                             _view.DisplayClear();
+
                             _tomagotchi.Heal();
                             break;
                         case "5":
                             await SaveGame();
                             break;
                         case "6":
-                            _view.DisplayClear();
-                            _view.DisplayMessage("Do you want to save your progress? (Y/N)");
-
-                            if (_view.GetUserInput().ToLower() == "y")
-                            {
-                                await SaveGame();
-                                await MainMenu();
-                            }
-                            else await MainMenu();
+                            await MainMenu();
                             break;
                         default:
                             _view.DisplayMessage("Invalid choice. Please choose again.");
