@@ -7,9 +7,9 @@ namespace TomagotchiGame.Controllers
     public class TomagotchiController : ITomagotchiController
     {
         private ITomagotchi _tomagotchi;
-        private readonly IView _view;
+        private readonly IConsoleView _view;
 
-        public TomagotchiController(IView view, ITomagotchi tomagotchi)
+        public TomagotchiController(IConsoleView view, ITomagotchi tomagotchi)
         {
             _view = view;
             _tomagotchi = tomagotchi;

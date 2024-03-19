@@ -3,7 +3,7 @@ using TomagotchiGame.SharedDto;
 
 namespace TomagotchiGame.Views
 {
-    public class ConsoleView : IView
+    public class ConsoleView : IConsoleView
     {
         public void DisplayClear()
         {

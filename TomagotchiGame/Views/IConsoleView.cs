@@ -3,7 +3,7 @@ using TomagotchiGame.SharedDto;
 
 namespace TomagotchiGame.Views
 {
-    public interface IView
+    public interface IConsoleView
     {
         void DisplayTomagotchiStatus(TomagotchiDto tomagotchiDto);
         void DisplayMessage(string message);
