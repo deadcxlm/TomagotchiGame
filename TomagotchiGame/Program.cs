@@ -19,7 +19,7 @@ namespace TomagotchiGame
 
             while (true)
             {
-                await controller.MainMenu(); // Отображаем главное меню и начинаем взаимодействие с пользователем
+                await controller.MainMenu();
             }
         }
     }

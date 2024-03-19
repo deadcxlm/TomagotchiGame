@@ -1,5 +1,4 @@
-﻿using System.Data;
-using System.Text.Json;
+﻿using System.Text.Json;
 using TomagotchiGame.Models;
 using TomagotchiGame.Views;
 
@@ -202,8 +201,6 @@ namespace TomagotchiGame.Controllers
                 await Task.Delay(1000);
                 await MainMenu();
             }
-
-            
 
             await StartGame();
         }
